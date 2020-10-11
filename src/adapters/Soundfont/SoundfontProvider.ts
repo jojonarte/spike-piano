@@ -1,7 +1,6 @@
 import React, { FunctionComponent, ReactElement, useEffect } from 'react';
 import { InstrumentName } from 'soundfont-player';
 import { MidiValue } from '../../domain/note';
-import { useInstrument } from '../../state/Instrument/Context';
 import { useSoundfont } from './useSoundfont';
 interface ProviderProps {
 	instrument?: InstrumentName;

@@ -12,8 +12,13 @@ interface KeyProps {
 	onDown: ReactEventHandler<HTMLButtonElement>;
 }
 
-export const Key: FunctionComponent<KeyProps> = (props) => {
-	const { type, label, onDown, onUp, ...rest } = props;
+export const Key: FunctionComponent<KeyProps> = ({
+	type,
+	label,
+	onDown,
+	onUp,
+	...rest
+}) => {
 	const pressed = usePressObserver({
 		watchKey: label,
 		onStartPress: onDown,

@@ -1,5 +1,5 @@
 import { InstrumentName } from 'soundfont-player';
-import instruments from 'soundfont-player/names/musyngkite.json';
+import instruments from 'soundfont-player/names/fluidR3.json';
 interface Option {
 	value: InstrumentName;
 	label: string;

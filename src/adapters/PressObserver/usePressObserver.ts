@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Key as KeyLabel } from '../../domain/keyboard';
 
-type isPressed = boolean;
+type IsPressed = boolean;
 type EventCode = string;
 
 interface Settings {
@@ -10,23 +10,31 @@ interface Settings {
 	onFinishPress: Function;
 }
 
+function fromEventCode(code: EventCode): KeyLabel {
+	const prefixRegex = /Key|Digit/gi;
+	return code.replace(prefixRegex, '');
+}
+
+function equal(watchedKey: KeyLabel, eventCode: EventCode): boolean {
+	return fromEventCode(eventCode).toUpperCase() === watchedKey.toUpperCase();
+}
+
 export function usePressObserver({
 	watchKey,
 	onStartPress,
 	onFinishPress,
-}: Settings): isPressed {
-	const [pressed, setPressed] = useState<isPressed>(false);
+}: Settings): IsPressed {
+	const [pressed, setPressed] = useState<IsPressed>(false);
 
 	useEffect(() => {
 		function handlePressStart({ code }: KeyboardEvent): void {
 			if (pressed || !equal(watchKey, code)) return;
-
 			setPressed(true);
 			onStartPress();
 		}
 
 		function handlePressFinish({ code }: KeyboardEvent): void {
-			if (pressed || !equal(watchKey, code)) return;
+			if (!pressed || !equal(watchKey, code)) return;
 			setPressed(false);
 			onFinishPress();
 		}
@@ -41,13 +49,4 @@ export function usePressObserver({
 	}, [watchKey, pressed, setPressed, onStartPress, onFinishPress]);
 
 	return pressed;
-}
-
-function equal(watchedKey: KeyLabel, eventCode: EventCode): boolean {
-	return fromEventCode(eventCode).toUpperCase() === watchedKey.toUpperCase();
-}
-
-function fromEventCode(code: EventCode): KeyLabel {
-	const prefixRegex = /Key|Digit/gi;
-	return code.replace(prefixRegex, '');
 }
